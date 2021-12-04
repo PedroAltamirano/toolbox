@@ -7,7 +7,7 @@ const INITIAL_STATE = {
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ADD_WORD:
-      return { ...state, words: [...state.words, action.payload.word] }
+      return { ...state, words: [...state.words, action.payload] }
       break
     default:
       return state;

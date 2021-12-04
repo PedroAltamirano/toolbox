@@ -1,14 +1,20 @@
-import { useState } from 'react'
+import { useState } from 'react';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { addWord } from './redux/actions';
 
 function App() {
+  const dispatch = useDispatch()
+  const words = useSelector(state => state.words)
+
   const [word, setWord] = useState('')
-  const [words, setWords] = useState([])
+  // const [words, setWords] = useState([])
 
   const handleInput = event => {
     setWord(event.target.value)
   }
 
-  const addWord = () => {
+  const handleSubmit = () => {
     if (!word || word === '') {
       alert('Ingresa una palabra')
       return
@@ -17,7 +23,10 @@ function App() {
     const base = 'http://127.0.0.1:3000/api/'
     fetch(`${base}iecho?text=${word}`)
       .then(res => res.json())
-      .then(reversed => setWords([...words, reversed.text]))
+      .then(data => {
+        console.log(data)
+        dispatch(addWord(data))
+      })
       .catch(err => {
         console.log(err.error)
       })
@@ -38,7 +47,7 @@ function App() {
               className='form-control'
             />
           </div>
-          <button className='btn btn-primary' onClick={addWord}>Send</button>
+          <button className='btn btn-primary' onClick={handleSubmit}>Send</button>
         </div>
       </header>
       <div className='container py-4'>
@@ -47,7 +56,10 @@ function App() {
           <div className='d-flex flex-column justify-content-center w-50 mx-auto'>
             {
               words && words.map(word => (
-                <p className='border p-1 rounded'>{word}</p>
+                <p className='border p-1 rounded d-flex justify-content-between'>
+                  {word.text}
+                  <span className='text-muted'>Palindromo: {word.palindrome ? 'si' : 'no'}</span>
+                </p>
               ))
             }
           </div>
