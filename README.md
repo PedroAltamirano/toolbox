@@ -35,7 +35,7 @@ y se descargan las dependencias
 
 para iniciar el servidor
 ```bash
-  $ node server.js
+  $ npm start
 ```
 o
 ```bash
